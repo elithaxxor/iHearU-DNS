@@ -1,6 +1,42 @@
 iDNS_CUP
 =====================================
 Overview
+
+
+# Explanation of the `eyeDNSu` File
+
+The file `eyeDNSu` is a Python script that implements a fake DNS server. Here is a detailed explanation of its functionality:
+
+## Logging Configuration:
+- The script sets up logging for both UDP and TCP DNS queries. It logs client IP addresses, the DNS queries made, the responses sent, and the frequency of each query.
+
+## Query Tracking:
+- The script uses dictionaries to keep track of how many times each client IP has queried each domain.
+
+## Domain-IP Mapping:
+- A dictionary (`DOMAIN_IP_MAP`) maps domain names to specific IP addresses. If a queried domain is not found in the dictionary, a default IP address (`192.168.1.100`) is returned.
+
+## DNS Query Handling:
+- The script defines two handler classes (`DNSUDPHandler` and `DNSTCPHandler`) to handle DNS queries over UDP and TCP, respectively.
+- Each handler parses the DNS query, logs the query details, determines the appropriate IP address to return, and sends back a DNS response with an A record containing that IP address.
+
+## Server Setup:
+- In the main block, the script sets up UDP and TCP servers on port 53 (or a custom port if provided via command-line argument).
+- It starts the servers and handles incoming DNS queries using separate threads for UDP and TCP.
+
+## Graceful Shutdown:
+- The script can be terminated using a keyboard interrupt, which will shut down the servers gracefully.
+
+## Example of Usage:
+
+To run the script, you would use a command like `python3 eyeDNSu` or `python3 eyeDNSu <custom_port>`.
+The script will then start listening for DNS queries on the specified port and respond according to the domain-IP mappings defined in the `DOMAIN_IP_MAP` dictionary.
+
+For more detailed information, you can view the file on GitHub.
+
+
+
+
 Use Cases
 The iDNS_CUP script is designed for various purposes, including:
 
