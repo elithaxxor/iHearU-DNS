@@ -121,3 +121,20 @@ Layer Breakdown
     Layer 4 (Transport Layer): UDP and TCP protocols.
     Layer 7 (Application Layer): DNS protocol.
     The script implements both DNSUDPHandler and DNSTCPHandler to handle DNS queries over UDP and TCP, respectively.
+```
+#### Change Log v1.2
+```markdown
+We’ve added an interactive menu when the server starts that asks the operator which action(s) should be performed on every DNS query:
+	1.	Log
+The server will log each query (to file and, optionally, to stdout in debug mode) and reply using the domain-to-IP mapping loaded from the config file.
+	2.	Reroute
+The server will not log queries. Instead, it will ignore the domain mapping and always return a fixed reroute IP address (in our example, "10.0.0.1").
+	3.	Both
+The server will do both – it logs the query and, at the same time, it overrides the configured IP with the reroute IP.
+
+A global variable (ACTION_MODE) is set based on the menu choice. In the request handlers, the logic now checks this variable. For instance, when constructing the DNS response:
+	•	If the mode is “log”:
+It uses the normal lookup (resolve_ip(qname)) from the config file.
+	•	If the mode is “reroute” or “both”:
+It uses a predefined reroute IP (here, "10.0.0.1").
+```
