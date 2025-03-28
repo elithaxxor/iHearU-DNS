@@ -1,4 +1,65 @@
 ```markdown
+
+
+	1.	Flask Integration:
+	•	A new Flask app is created with endpoints (/, /pie, /line, /heat).
+	•	Each endpoint generates a visualization chart (using matplotlib) and returns it as an image (PNG).
+	•	The start_flask_server() function launches the Flask app in a separate thread on port 5000.
+	2.	Concurrent Operation:
+	•	When run with the --flask flag, the Flask server starts alongside the asynchronous DNS server so you can access the online dashboard.
+	3.	Visualization Data:
+	•	The global list query_records collects query data in real time, which is used to generate the charts.
+	4.	Usage:
+
+
+#### Run the DNS server with:
+```bash
+	python eyeDNSu-web.py --flask
+``
+
+# eyeDNSu: Fake DNS Rerouting and Visualization Server
+
+## Overview
+
+**eyeDNSu** is an advanced fake DNS server designed for testing, research, and demonstration purposes. It reroutes DNS queries for configured domains and provides extensive logging and visualization of query data. The server supports both UDP and TCP DNS queries and is built using asynchronous I/O for improved performance. In addition, it integrates a Flask web server for online access to real-time visualizations.
+
+## Purpose
+
+The primary purpose of eyeDNSu is to simulate a DNS server that:
+- **Reroutes**: Redirects DNS queries for specified domains (e.g., the top 500 visited websites) to a fixed IP address.
+- **Logs**: Records query details (client IP, domain queried, frequency, etc.) to log files.
+- **Visualizes**: Generates dynamic visualizations (pie charts, line graphs, heat maps) of the DNS query data.
+- **Tests & Research**: Acts as a testbed for network research, security testing, and performance benchmarking.
+
+## Capabilities
+
+### DNS Query Handling
+- **Protocols**: Supports both UDP and TCP DNS queries.
+- **Record Types**: Currently handles A records, with extensions for AAAA and MX records.
+- **Action Modes**: Provides a configurable action mode:
+  - **Log only**: Processes queries normally and logs details.
+  - **Reroute only**: Ignores configuration and always responds with a fixed IP (e.g., `10.0.0.1`).
+  - **Both log and reroute**: Logs the query and returns the fixed reroute IP.
+
+### Dynamic Configuration & Caching
+- **Dynamic Config Loader**: Loads domain-to-record mappings from a JSON configuration file (`dns_config.json`). Supports automatic reloading to reflect changes.
+- **Response Caching**: Implements an LRU cache with TTL for DNS responses to improve performance and reduce load.
+
+### Visualization
+- **Data Collection**: Collects query data (timestamps, domains, protocol used) in real time.
+- **Visualization Options**: Provides multiple visualization methods:
+  - **Pie Charts**: Distribution of DNS queries by domain.
+  - **Line Graphs**: Trends of DNS queries over time.
+  - **Heat Maps**: Peak usage times by hour of the day.
+- **Web Dashboard**: Integrates a Flask web server that exposes endpoints to display the visualizations online.
+
+### Testing
+- **Unit & Integration Tests**: Includes a suite of tests to verify UDP/TCP query processing and basic server functionality using Python's `unittest` framework.
+
+
+
+
+
 # Explanation of the `eyeDNSu` File
 
 The file `eyeDNSu` is a Python script that implements a fake DNS server. Here is a detailed explanation of its functionality:
